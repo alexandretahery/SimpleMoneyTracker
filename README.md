@@ -1,0 +1,2 @@
+# SimpleMoneyTracker
+Blazor Money Tracker
