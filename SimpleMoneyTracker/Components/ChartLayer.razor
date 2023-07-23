@@ -1,0 +1,47 @@
+﻿@inject IJSRuntime JS
+@using Microsoft.AspNetCore.Components.Forms
+@using SimpleMoneyTracker.Models;
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card-body chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h3>Historique de payment</h3>
+                <EditForm Model="@record" OnSubmit="@HandleNewAmont">
+                    <InputNumber @bind-Value="record.Amount"></InputNumber>
+                    <InputText @bind-Value="record.Label"></InputText>
+                    <InputDate @bind-Value="record.Date"></InputDate>
+                    <button type="submit">Add</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private IJSObjectReference? jsModule;
+
+    private Record record = new Record();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/ChartLayer.razor.js");
+
+            await jsModule.InvokeVoidAsync("ChartLoader");
+        }
+    }
+
+    private void HandleNewAmont()
+    {
+            Console.WriteLine(record);
+    }
+}
