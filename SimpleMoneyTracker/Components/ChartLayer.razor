@@ -1,47 +1,165 @@
 ﻿@inject IJSRuntime JS
+@using BlazorBootstrap.Extensions
 @using Microsoft.AspNetCore.Components.Forms
 @using SimpleMoneyTracker.Models;
+@using Color = System.Drawing.Color;
 
 <div class="container">
-    <div class="row">
+    <div class="row p-1">
+        <LineChart @ref="lineChart" Width="600" Class="mb-4" />
+    </div>
+    <div class="row input-group p-1">
         <div class="col">
-            <div class="card-body chart-container">
-                <canvas id="myChart"></canvas>
-            </div>
+            <DateInput TValue="DateTime" @bind-Value="@_date" Placeholder="Enter Date" />
         </div>
-        <div class="row">
-            <div class="col">
-                <h3>Historique de payment</h3>
-                <EditForm Model="@record" OnSubmit="@HandleNewAmont">
-                    <InputNumber @bind-Value="record.Amount"></InputNumber>
-                    <InputText @bind-Value="record.Label"></InputText>
-                    <InputDate @bind-Value="record.Date"></InputDate>
-                    <button type="submit">Add</button>
-                </EditForm>
-            </div>
+        <div class="col">
+            <CurrencyInput TValue="double" @bind-Value="@_amount" Locale="fr-FR" Placeholder="Enter amount" AllowNegativeNumbers=true />
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Description" @bind-value=_label />
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col">
+            <Button Color="ButtonColor.Primary" @onclick="AddRecordsAsync">Add Record</Button>
         </div>
     </div>
 </div>
 
 
-
 @code {
+
+    private LineChart lineChart;
+
+
+    private ChartData chartData;
+    private LineChartOptions chartOptions;
+
+    /// <summary>
+    /// Text input for the amount
+    /// </summary>
+    private double _amount;
+
+    /// <summary>
+    /// Text input for the date
+    /// </summary>
+    private DateTime _date = DateTime.Now;
+
+    /// <summary>
+    /// Text input for the label
+    /// </summary>
+    private string? _label;
+
+    /// <summary>
+    /// Data used for gestion of money
+    /// </summary>
+    List<Record> History = new List<Record>();
+
+    Random random = new Random();
     private IJSObjectReference? jsModule;
 
-    private Record record = new Record();
+    protected override void OnInitialized()
+    {
+        // Init
+        chartOptions = new LineChartOptions
+            {
+                Responsive = true,
+                Interaction = new Interaction { Mode = InteractionMode.Index },
+                Plugins = new Plugins
+                {
+                    Title = new Title
+                    {
+                        Display = true,
+                        Text = "Suivie des dépenses"
+                    }
+                },
+                Scales = new Scales
+                {
+                    X = new ChartAxes
+                    {
+                        Title = new Title
+                        {
+                            Display = true,
+                            Text = "Dates"
+                        },
+                        BeginAtZero = true
+                    },
+                    Y = new ChartAxes
+                    {
+                        Title = new Title
+                        {
+                            Display = true,
+                            Text = "Euros"
+                        },
+                        BeginAtZero = true
+                    }
+                }
+            };
+
+        chartData = new ChartData
+            {
+                Labels = new List<string>(),
+
+                Datasets = new List<IChartDataset>()
+            };
+
+        chartData.Datasets.Add(CreateNewLineChart());
+
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/ChartLayer.razor.js");
+        await lineChart.UpdateAsync(chartData, chartOptions);
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
-            await jsModule.InvokeVoidAsync("ChartLoader");
+    private async Task AddRecordsAsync()
+    {
+        if (_amount == 0)
+            return;
+        if (!History.Any())
+        {
+            Record record = new Record(_amount, _label, _date);
+            History.Add(record);
+            await AddDataAsync(_label, _amount);
+        }
+        else
+        {
+            Record lastSold = History.LastOrDefault();
+
+            Record record = new Record(lastSold.Amount + _amount, _label, _date);
+            History.Add(record);
+            await AddDataAsync(record.Label, record.Amount);
         }
     }
 
-    private void HandleNewAmont()
+    private async Task AddDataAsync(string label, double amount)
     {
-            Console.WriteLine(record);
+        if (chartData is null
+            || chartData.Datasets is null)
+            return;
+
+        ((LineChartDataset)chartData.Datasets[0]).Data.Add(amount);
+        chartData.Labels.Add(label);
+
+        await lineChart.UpdateAsync(chartData, chartOptions);
+    }
+
+    private LineChartDataset CreateNewLineChart()
+    {
+        var c = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+        return new LineChartDataset()
+            {
+                Label = $"Line chart dataset {chartData.Datasets.Count + 1}",
+                Data = new List<double>(),
+                BackgroundColor = new List<string> { c.ToRgbString() },
+                BorderColor = new List<string> { c.ToRgbString() },
+                BorderWidth = new List<double> { 2 },
+                BorderDashOffset = 1000,
+                HoverBorderWidth = new List<double> { 4 },
+                PointBackgroundColor = new List<string> { c.ToRgbString() },
+                PointRadius = new List<int> { 0 }, // hide points
+                PointHoverRadius = new List<int> { 4 },
+            };
     }
 }
