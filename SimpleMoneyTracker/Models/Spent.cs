@@ -1,13 +1,13 @@
 ﻿namespace SimpleMoneyTracker.Models
 {
-    public class Record
+    public class Spent
     {
         public Guid Id { get; private set; }
         public double Amount { get; set; }
         public string Label { get; set; }
         public DateTime Date { get; set; }
 
-        public Record(double amount, string label, DateTime date)
+        public Spent(double amount, string label, DateTime date)
         {
             Id = Guid.NewGuid();
             Amount = amount;
@@ -15,7 +15,7 @@
             Date = DateTime.Now;
         }
 
-        public Record()
+        public Spent()
         {
             Id = Guid.NewGuid();
         }
