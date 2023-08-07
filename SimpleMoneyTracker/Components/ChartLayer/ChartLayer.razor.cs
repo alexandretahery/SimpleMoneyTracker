@@ -17,32 +17,19 @@ namespace SimpleMoneyTracker.Components.ChartLayer
         #endregion
 
         #region Forms
-
-        /// <summary>
-        /// Text input for the amount
-        /// </summary>
+        /// <summary>Text input for the amount</summary>
         private double _amount;
-
-        /// <summary>
-        /// Text input for the date
-        /// </summary>
+        /// <summary>Text input for the date</summary>
         private DateTime _date = DateTime.Now;
-
-        /// <summary>
-        /// Text input for the label
-        /// </summary>
+        /// <summary>Text input for the label</summary>
         private string? _label;
-
         #endregion
 
-        /// <summary>
-        /// Data used for gestion of money
-        /// </summary>
+        /// <summary>Data used for gestion of money</summary>
         private List<Spent> _history = new List<Spent>();
 
         protected override void OnInitialized()
         {
-            // Init
             chartOptions = new LineChartOptions
             {
                 Responsive = true,

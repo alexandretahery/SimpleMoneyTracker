@@ -1,6 +1,18 @@
 ﻿@page "/"
+@using SimpleMoneyTracker.Components
 @using SimpleMoneyTracker.Components.ChartLayer
 
 <PageTitle>Index</PageTitle>
 
-<ChartLayer></ChartLayer>
+<div class="container">
+    <div class="row p-1">
+        <div class="col">
+        <ChartLayer></ChartLayer>
+        </div>
+    </div>
+    <div class="row p-1">
+        <div class="col">
+            <FormLayer></FormLayer>
+        </div>
+    </div>
+</div>

@@ -1,42 +1,49 @@
 ﻿using SimpleMoneyTracker.Models;
 
-namespace SimpleMoneyTracker.Components.ChartLayer
+namespace SimpleMoneyTracker.Services
 {
-    public class ChartLayerHelper
+    public class HistorySpents
     {
+        List<Spent> Spents { get; set; }
+
+        public HistorySpents() 
+        {
+            Spents = new List<Spent>();
+        }
+
         /// <summary>Create a new record</summary>
-        /// <param name="records">List of spent</param>
+        /// <param name="Spents">List of spent</param>
         /// <param name="inputAmount">Amount Spent</param>
         /// <param name="inputLabel">Label Spent</param>
         /// <param name="inputDateTime">Date Spent</param>
         /// <returns>return new obj spent with Amount calculated with history</returns>
-        static public Spent CreateNewRecord(List<Spent> records, double inputAmount, string inputLabel, DateTime inputDateTime)
+        public Spent CreateNewRecord(double inputAmount, string inputLabel, DateTime inputDateTime)
         {
-            if (!records.Any())
+            if (!Spents.Any())
             {
                 Spent expense = new Spent(inputAmount, inputLabel, inputDateTime);
                 return expense;
             }
             else
             {
-                Spent lastSold = records.Last();
+                Spent lastSold = Spents.Last();
                 Spent expense = new Spent(lastSold.Amount + inputAmount, inputLabel, inputDateTime);
                 return expense;
             }
         }
 
         /// <summary>Insert a new record in the list chronologically</summary>
-        /// <param name="records">List of spents</param>
+        /// <param name="Spents">List of spents</param>
         /// <param name="newSpent">new spent to add</param>
-        static public void InsertChronologically(List<Spent> records, Spent newSpent)
+        public void InsertChronologically(Spent newSpent)
         {
-            if (!records.Any())
+            if (!Spents.Any())
             {
-                records.Add(newSpent);
+                Spents.Add(newSpent);
                 return;
             }
-            Spent lastValue = records.Where(r => r.Date < newSpent.Date).Last();
-            records.Insert(records.IndexOf(lastValue) + 1, newSpent);
+            Spent lastValue = Spents.Where(r => r.Date < newSpent.Date).Last();
+            Spents.Insert(Spents.IndexOf(lastValue) + 1, newSpent);
         }
     }
 }
