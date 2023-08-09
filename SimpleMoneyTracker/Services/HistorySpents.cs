@@ -4,7 +4,7 @@ namespace SimpleMoneyTracker.Services
 {
     public class HistorySpents
     {
-        List<Spent> Spents { get; set; }
+        public List<Spent> Spents { get; private set; }
 
         public HistorySpents() 
         {

@@ -1,6 +1,8 @@
 using BlazorBootstrap;
 using BlazorBootstrap.Extensions;
+using Microsoft.AspNetCore.Components;
 using SimpleMoneyTracker.Models;
+using SimpleMoneyTracker.Services;
 using Color = System.Drawing.Color;
 
 namespace SimpleMoneyTracker.Components.ChartLayer
@@ -24,6 +26,9 @@ namespace SimpleMoneyTracker.Components.ChartLayer
         /// <summary>Text input for the label</summary>
         private string? _label;
         #endregion
+
+        [Inject]
+        private HistorySpents _historySpents { get; set; }
 
         /// <summary>Data used for gestion of money</summary>
         private List<Spent> _history = new List<Spent>();
@@ -73,6 +78,8 @@ namespace SimpleMoneyTracker.Components.ChartLayer
                 Datasets = new List<IChartDataset>()
             };
             chartData.Datasets.Add(CreateNewLineChart());
+            if (_historySpents is null)
+                throw new NullReferenceException("HistorySpents is null");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -125,10 +132,12 @@ namespace SimpleMoneyTracker.Components.ChartLayer
             if (_amount == 0)
                 return;
 
-            Spent newSpent = ChartLayerHelper.CreateNewRecord(_history, _amount, _label, _date);
-            ChartLayerHelper.InsertChronologically(_history, newSpent);
-            UpdateChart(_history);
+            Spent newSpent = _historySpents.CreateNewRecord(_amount, _label, _date);
+            _historySpents.InsertChronologically(newSpent);
+            //Spent newSpent = ChartLayerHelper.CreateNewRecord(_history, _amount, _label, _date);
+            //ChartLayerHelper.InsertChronologically(_history, newSpent);
 
+            UpdateChart(_historySpents.Spents);
             await lineChart.UpdateAsync(chartData, chartOptions);
         }
 
