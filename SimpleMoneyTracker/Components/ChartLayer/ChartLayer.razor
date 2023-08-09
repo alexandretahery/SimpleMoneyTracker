@@ -8,21 +8,4 @@
     <div class="row p-1">
         <LineChart @ref="lineChart" Width="600" Class="mb-4" />
     </div>
-
-    <div class="row input-group p-1">
-        <div class="col">
-            <DateInput TValue="DateTime" @bind-Value="@_date" Placeholder="Enter Date" />
-        </div>
-        <div class="col">
-            <CurrencyInput TValue="double" @bind-Value="@_amount" Locale="fr-FR" Placeholder="Enter amount" AllowNegativeNumbers=true />
-        </div>
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Description" @bind-value=_label />
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col">
-            <Button Color="ButtonColor.Primary" @onclick="AddRecordsAsync">Add Record</Button>
-        </div>
-    </div>
 </div>

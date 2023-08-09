@@ -6,6 +6,8 @@ namespace SimpleMoneyTracker.Services
     {
         public List<Spent> Spents { get; private set; }
 
+        public event EventHandler OnHistoryUpdates;
+
         public HistorySpents() 
         {
             Spents = new List<Spent>();
@@ -44,6 +46,7 @@ namespace SimpleMoneyTracker.Services
             }
             Spent lastValue = Spents.Where(r => r.Date < newSpent.Date).Last();
             Spents.Insert(Spents.IndexOf(lastValue) + 1, newSpent);
+            OnHistoryUpdates?.Invoke(this, EventArgs.Empty);
         }
     }
 }

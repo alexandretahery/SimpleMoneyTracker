@@ -3,11 +3,12 @@ using BlazorBootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using SimpleMoneyTracker.Models;
 using SimpleMoneyTracker.Services;
+using System.Collections.Generic;
 using Color = System.Drawing.Color;
 
 namespace SimpleMoneyTracker.Components.ChartLayer
 {
-    public partial class ChartLayer
+    public partial class ChartLayer : IDisposable
     {
 
         #region Graphic
@@ -80,6 +81,12 @@ namespace SimpleMoneyTracker.Components.ChartLayer
             chartData.Datasets.Add(CreateNewLineChart());
             if (_historySpents is null)
                 throw new NullReferenceException("HistorySpents is null");
+            _historySpents.OnHistoryUpdates += OnSpentAdded;
+        }
+
+        private void OnSpentAdded(object? sender, EventArgs e)
+        {
+            UpdateChart(_historySpents.Spents);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -127,21 +134,7 @@ namespace SimpleMoneyTracker.Components.ChartLayer
             };
         }
 
-        private async Task AddRecordsAsync()
-        {
-            if (_amount == 0)
-                return;
-
-            Spent newSpent = _historySpents.CreateNewRecord(_amount, _label, _date);
-            _historySpents.InsertChronologically(newSpent);
-            //Spent newSpent = ChartLayerHelper.CreateNewRecord(_history, _amount, _label, _date);
-            //ChartLayerHelper.InsertChronologically(_history, newSpent);
-
-            UpdateChart(_historySpents.Spents);
-            await lineChart.UpdateAsync(chartData, chartOptions);
-        }
-
-        private void UpdateChart(List<Spent> history)
+        private async void UpdateChart(List<Spent> history)
         {
             if (chartData is null)
                 return;
@@ -161,7 +154,12 @@ namespace SimpleMoneyTracker.Components.ChartLayer
 
             ((LineChartDataset)chartData.Datasets[0]).Data = HistoryUpdated;
             chartData.Labels = LabelUpdated;
+            await lineChart.UpdateAsync(chartData, chartOptions);
         }
 
+        public void Dispose()
+        {
+            _historySpents.OnHistoryUpdates -= OnSpentAdded;
+        }
     }
 }
