@@ -1,6 +1,4 @@
-using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
-using SimpleMoneyTracker.Components.ChartLayer;
 using SimpleMoneyTracker.Models;
 using SimpleMoneyTracker.Services;
 
@@ -26,7 +24,7 @@ namespace SimpleMoneyTracker.Components
         [Inject]
         private HistorySpents HistorySpents { get; set; }
 
-        private async Task AddRecordsAsync()
+        private void AddRecords()
         {
             if (_amount == 0)
                 return;

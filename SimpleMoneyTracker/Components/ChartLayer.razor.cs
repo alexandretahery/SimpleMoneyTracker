@@ -3,10 +3,9 @@ using BlazorBootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using SimpleMoneyTracker.Models;
 using SimpleMoneyTracker.Services;
-using System.Collections.Generic;
 using Color = System.Drawing.Color;
 
-namespace SimpleMoneyTracker.Components.ChartLayer
+namespace SimpleMoneyTracker.Components
 {
     public partial class ChartLayer : IDisposable
     {
@@ -35,6 +34,14 @@ namespace SimpleMoneyTracker.Components.ChartLayer
         private List<Spent> _history = new List<Spent>();
 
         protected override void OnInitialized()
+        {
+            if (_historySpents is null)
+                throw new NullReferenceException("HistorySpents is null");
+            _historySpents.OnHistoryUpdates += OnSpentAdded;
+            InitChart();
+        }
+
+        private void InitChart()
         {
             chartOptions = new LineChartOptions
             {
@@ -79,9 +86,6 @@ namespace SimpleMoneyTracker.Components.ChartLayer
                 Datasets = new List<IChartDataset>()
             };
             chartData.Datasets.Add(CreateNewLineChart());
-            if (_historySpents is null)
-                throw new NullReferenceException("HistorySpents is null");
-            _historySpents.OnHistoryUpdates += OnSpentAdded;
         }
 
         private void OnSpentAdded(object? sender, EventArgs e)
@@ -91,6 +95,7 @@ namespace SimpleMoneyTracker.Components.ChartLayer
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+
             await lineChart.UpdateAsync(chartData, chartOptions);
             await base.OnAfterRenderAsync(firstRender);
         }
@@ -143,8 +148,8 @@ namespace SimpleMoneyTracker.Components.ChartLayer
             List<string> LabelUpdated = new List<string>();
             foreach (var item in history)
             {
-                HistoryUpdated.Add(item.Amount);
-                LabelUpdated.Add(item.Label);
+                HistoryUpdated.Add(item.Total);
+                LabelUpdated.Add(item.Date.ToString() + " " +  item.Label);
             }
             // Clear Data
             foreach (var item in chartData.Datasets)

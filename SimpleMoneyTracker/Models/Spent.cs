@@ -1,16 +1,20 @@
-﻿namespace SimpleMoneyTracker.Models
+﻿using BlazorBootstrap;
+
+namespace SimpleMoneyTracker.Models
 {
     public class Spent
     {
         public Guid Id { get; private set; }
         public double Amount { get; set; }
+        public double Total { get; set; }
         public string Label { get; set; }
         public DateTime Date { get; set; }
 
-        public Spent(double amount, string label, DateTime date)
+        public Spent(double amount, double total, string label, DateTime date)
         {
             Id = Guid.NewGuid();
             Amount = amount;
+            Total = total;
             Label = label;
             Date = DateTime.Now;
         }

@@ -8,7 +8,7 @@ namespace SimpleMoneyTracker.Services
 
         public event EventHandler OnHistoryUpdates;
 
-        public HistorySpents() 
+        public HistorySpents()
         {
             Spents = new List<Spent>();
         }
@@ -23,13 +23,13 @@ namespace SimpleMoneyTracker.Services
         {
             if (!Spents.Any())
             {
-                Spent expense = new Spent(inputAmount, inputLabel, inputDateTime);
+                Spent expense = new Spent(inputAmount, inputAmount, inputLabel, inputDateTime);
                 return expense;
             }
             else
             {
                 Spent lastSold = Spents.Last();
-                Spent expense = new Spent(lastSold.Amount + inputAmount, inputLabel, inputDateTime);
+                Spent expense = new Spent(inputAmount, lastSold.Total + inputAmount, inputLabel, inputDateTime);
                 return expense;
             }
         }
@@ -42,11 +42,62 @@ namespace SimpleMoneyTracker.Services
             if (!Spents.Any())
             {
                 Spents.Add(newSpent);
-                return;
             }
-            Spent lastValue = Spents.Where(r => r.Date < newSpent.Date).Last();
-            Spents.Insert(Spents.IndexOf(lastValue) + 1, newSpent);
+            else
+            {
+                Spent lastValue = Spents.Where(r => r.Date < newSpent.Date).Last();
+                Spents.Insert(Spents.IndexOf(lastValue) + 1, newSpent);
+            }
+            string historyInCSV = GenerateReport(Spents);
+            //WriteHistory(historyInCSV);
             OnHistoryUpdates?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void WriteHistory(string historyInCSV)
+        {
+            using (StreamWriter writer = new StreamWriter("/"))
+            {
+                writer.WriteLine(historyInCSV);
+            }
+            string readText = File.ReadAllText("/");
+            Console.WriteLine(readText);
+        }
+
+        public void RemoveRecord(Spent spent)
+        {
+            Spents.Remove(spent);
+            OnHistoryUpdates?.Invoke(this, EventArgs.Empty);
+        }
+
+        public string GenerateReport<T>(List<T> items) where T : class
+        {
+            string output = string.Empty;
+            char delimiter = ';';
+            var properties = typeof(T).GetProperties()
+            .Where(n =>
+            n.PropertyType == typeof(string)
+            || n.PropertyType == typeof(bool)
+            || n.PropertyType == typeof(char)
+            || n.PropertyType == typeof(byte)
+            || n.PropertyType == typeof(decimal)
+            || n.PropertyType == typeof(double)
+            || n.PropertyType == typeof(int)
+            || n.PropertyType == typeof(DateTime)
+            || n.PropertyType == typeof(DateTime?)); using (var sw = new StringWriter())
+            {
+                var header = properties
+                .Select(n => n.Name)
+                .Aggregate((a, b) => a + delimiter + b);
+                sw.WriteLine(header);
+                foreach (var item in items)
+                {
+                    var row = properties
+                    .Select(n => n.GetValue(item, null))
+                    .Select(n => n == null ? "null" : n.ToString()).Aggregate((a, b) => a + delimiter + b); sw.WriteLine(row);
+                }
+                output = sw.ToString();
+            }
+            return output;
         }
     }
 }
