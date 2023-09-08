@@ -1,0 +1,5 @@
+Encours de développement
+Avoir un csv pour avoir de la donné persistante.
+
+Ajouter un bouton pour supprimer une dépense.
+Ajouter un systeme de filtre sur un temps donné.
