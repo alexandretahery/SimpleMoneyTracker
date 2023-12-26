@@ -1,7 +1,7 @@
 using BlazorBootstrap;
-using MauiMoneyTracker.Data;
-using Microsoft.AspNetCore.Components;
+using DatabaseMoneyTracker;
 using MauiMoneyTracker.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace MauiMoneyTracker.Components
 {
@@ -33,7 +33,7 @@ namespace MauiMoneyTracker.Components
 
         private async Task<GridDataProviderResult<Spent>> SpentsProvider(GridDataProviderRequest<Spent> request)
         {
-            spentsHistory = HistorySpents.Spents;
+            spentsHistory = (IEnumerable<Spent>)HistorySpents.Spents;
             return await Task.FromResult(request.ApplyTo(spentsHistory));
         }
     }

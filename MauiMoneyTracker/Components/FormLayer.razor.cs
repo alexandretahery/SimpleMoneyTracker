@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MauiMoneyTracker.Services;
-using MauiMoneyTracker.Data;
+using DatabaseMoneyTracker;
 
 namespace MauiMoneyTracker.Components
 {

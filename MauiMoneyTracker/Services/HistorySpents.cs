@@ -1,4 +1,4 @@
-﻿using MauiMoneyTracker.Data;
+﻿using DatabaseMoneyTracker;
 
 namespace MauiMoneyTracker.Services
 {

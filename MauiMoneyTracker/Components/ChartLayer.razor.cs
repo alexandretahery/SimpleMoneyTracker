@@ -3,6 +3,7 @@ using MauiMoneyTracker.Data;
 using Microsoft.AspNetCore.Components;
 using MauiMoneyTracker.Services;
 using Color = System.Drawing.Color;
+using DatabaseMoneyTracker;
 
 namespace MauiMoneyTracker.Components
 {
