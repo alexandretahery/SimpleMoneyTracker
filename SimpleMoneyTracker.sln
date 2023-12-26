@@ -8,9 +8,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Todo.txt = Todo.txt
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSqlLite", "MauiSqlLite\MauiSqlLite.csproj", "{F57D552A-C464-4723-B031-CEE88B784EA9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjetTest", "ProjetTest", "{A68EC67E-C09B-4CDA-B20A-FE93F8399633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackerDb", "MoneyTrackerDb\MoneyTrackerDb.csproj", "{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSqlLite", "ProjetTest\MauiSqlLite\MauiSqlLite.csproj", "{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackerApp", "MoneyTrackerApp\MoneyTrackerApp.csproj", "{32972843-F5A1-4E50-BC6D-8A5886CBE32E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,19 +22,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F57D552A-C464-4723-B031-CEE88B784EA9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F57D552A-C464-4723-B031-CEE88B784EA9} = {A68EC67E-C09B-4CDA-B20A-FE93F8399633}
 		{A68EC67E-C09B-4CDA-B20A-FE93F8399633} = {F222E4DD-270F-4827-8B47-3A8BDC22665F}
+		{9CE8BFCE-BB37-44B1-A2DD-998F0B522BA6} = {F222E4DD-270F-4827-8B47-3A8BDC22665F}
+		{AFB0CA1D-44A3-4A4C-A5C9-517E2E4D29BA} = {A68EC67E-C09B-4CDA-B20A-FE93F8399633}
+		{32972843-F5A1-4E50-BC6D-8A5886CBE32E} = {F222E4DD-270F-4827-8B47-3A8BDC22665F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {520057A7-7D94-4540-8D7C-7319D3AFACB3}
