@@ -21,7 +21,7 @@ namespace MoneyTrackerDb
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MoneyRecord>().ToTable("Credits");
+            modelBuilder.Entity<MoneyRecord>().ToTable("MoneyRecords");
         }
 
         private void GetPath(string databaseName)

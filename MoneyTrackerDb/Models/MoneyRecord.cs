@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using MoneyTracker.Common;
 
 namespace MoneyTrackerDb.Models
 {
-    internal class MoneyRecord : IMoneyRecord
+    public class MoneyRecord : IMoneyRecord
     {
         [Key]
         public int Id { get; set; }
@@ -11,6 +12,6 @@ namespace MoneyTrackerDb.Models
         public double Amount { get; set; }
         public DateTime Date { get; set; }
         public string Category { get; set; }
-        public string Type { get; set; }
+        public RecordType RecordType { get;  set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MoneyTrackerDb.BLL;
+using MoneyTrackerDb.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace MoneyTrackerDb
 {
     public class Dataservice
     {
-        public MoneyRecordBLL MoneyRecordBLL { get; }
+        //public IncomeController IncomeController { get; }
+        public SpentController SpentController { get; }
+
+        public Dataservice()
+        {
+            //IncomeController = new IncomeController();
+            SpentController = new SpentController();
+        }
     }
 }
