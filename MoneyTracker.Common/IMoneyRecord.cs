@@ -1,6 +1,6 @@
 ﻿namespace MoneyTracker.Common
 {
-    public interface IMoneyRecord
+    public interface IMoneyRecord 
     {
         public int Id { get; }
         public string Description { get; set; }

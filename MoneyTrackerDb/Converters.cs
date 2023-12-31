@@ -18,10 +18,10 @@ namespace MoneyTrackerDb
             };
         }
 
-        //public static ISpent MoneyRecordToSpent(this IMoneyRecord spent)
-        //{
-        //    return (ISpent)spent;
-        //}
+        public static ISpent MoneyRecordToSpent(this IMoneyRecord spent)
+        {
+            return (ISpent)spent;
+        }
 
     }
 }

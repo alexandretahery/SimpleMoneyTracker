@@ -41,6 +41,7 @@ namespace MoneyTrackerDb.BLL
             moneyRecord.RecordType = RecordType.Spent;
             _db.InsertMoneyRecord(moneyRecord);
             //return moneyRecord.MoneyRecordToSpent();
+            return null;
         }
 
         public void UpdateMoneySpent(IMoneyRecord moneyRecord)
