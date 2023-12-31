@@ -1,4 +1,5 @@
-﻿using MoneyTrackerDb.Models;
+﻿using MoneyTracker.Common;
+using MoneyTrackerDb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,18 +40,29 @@ namespace MoneyTrackerDb.DAL
             return _context.MoneyLog.Where(m => m.Date >= dateStart && m.Date <= dateEnd);
         }
 
-        public void InsertMoneyRecord(MoneyRecord moneyRecord)
+        public IMoneyRecord InsertMoneyRecord(MoneyRecord moneyRecord)
         {
             _context.MoneyLog.Add(moneyRecord);
             _context.SaveChanges();
+            return moneyRecord;
         }
 
-        public void UpdateMoneyRecord(MoneyRecord moneyRecord)
+        public MoneyRecord UpdateMoneyRecord(IMoneyRecord moneyRecord)
         {
             MoneyRecord recordToUpdate = _context.MoneyLog.Where(m => m.Id == moneyRecord.Id).FirstOrDefault();
-            recordToUpdate = moneyRecord as MoneyRecord;
-            _context.Update(recordToUpdate);
+            AssignForUpdate(moneyRecord, recordToUpdate);
+            _context.MoneyLog.Update(recordToUpdate);
             _context.SaveChanges();
+            return recordToUpdate;
+        }
+
+        private static void AssignForUpdate(IMoneyRecord moneyRecord, MoneyRecord recordToUpdate)
+        {
+            recordToUpdate.Description = moneyRecord.Description;
+            recordToUpdate.Amount = moneyRecord.Amount;
+            recordToUpdate.Date = moneyRecord.Date;
+            recordToUpdate.Category = moneyRecord.Category;
+            recordToUpdate.RecordType = moneyRecord.RecordType;
         }
 
         public void DeleteMoneyRecord(int id)

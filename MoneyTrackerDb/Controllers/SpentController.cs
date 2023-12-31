@@ -16,27 +16,27 @@ namespace MoneyTrackerDb.Controllers
 
         public ISpent GetSpentById(int id)
         {
-            return (ISpent)_spentBll.GetMoneySpentById(id);
+            return _spentBll.GetMoneySpentById(id);
         }
 
         public IEnumerable<ISpent> GetSpentAll()
         {
-            return (IEnumerable<ISpent>)_spentBll.GetAllMoneySpent();
+            return _spentBll.GetAllMoneySpent();
         }
 
         public IEnumerable<ISpent> GetSpentBetweenDate(DateTime dateStart, DateTime dateEnd)
         {
-            return (IEnumerable<ISpent>)_spentBll.GetMoneySpentBetweenDate(dateStart, dateEnd);
+            return _spentBll.GetMoneySpentBetweenDate(dateStart, dateEnd);
         }
 
         public ISpent CreateSpent(ISpent moneyRecord)
         {
-            return _spentBll.CreateMoneySpent(moneyRecord.SpentToMoneyRecord());
+            return _spentBll.CreateMoneySpent(moneyRecord);
         }
 
-        public void UpdateSpent(ISpent moneyRecord)
+        public ISpent UpdateSpent(ISpent moneyRecord)
         {
-            //_spentBll.UpdateMoneySpent(moneyRecord);
+            return _spentBll.UpdateMoneySpent(moneyRecord);
         }
 
         public void DeleteSpent(int id)

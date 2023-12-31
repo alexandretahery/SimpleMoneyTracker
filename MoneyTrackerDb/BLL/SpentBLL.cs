@@ -16,40 +16,35 @@ namespace MoneyTrackerDb.BLL
             _db = new MoneyRecordDAL();
         }
 
-        public IMoneyRecord GetMoneySpentById(int id)
+        public ISpent GetMoneySpentById(int id)
         {
-            IMoneyRecord moneyRecord = _db.GetMoneyRecordById(id);
-            if (moneyRecord.RecordType != RecordType.Spent)
-                return null;
-            return moneyRecord;
+            return _db.GetMoneyRecordById(id).MoneyRecordToSpent();
         }
 
-        public IEnumerable<IMoneyRecord> GetAllMoneySpent()
+        public IEnumerable<ISpent> GetAllMoneySpent()
         {
-            IEnumerable<IMoneyRecord> moneyRecords = _db.GetAllMoneyRecord();
-            return moneyRecords.Where(m => m.RecordType == RecordType.Spent);
+            return _db.GetAllMoneyRecord().Where(m => m.RecordType == RecordType.Spent)
+                                          .Select(moneyRecords => moneyRecords.MoneyRecordToSpent());
         }
 
-        public IEnumerable<IMoneyRecord> GetMoneySpentBetweenDate(DateTime dateStart, DateTime dateEnd)
+        public IEnumerable<ISpent> GetMoneySpentBetweenDate(DateTime dateStart, DateTime dateEnd)
         {
-            IEnumerable<IMoneyRecord> moneyRecords = _db.GetMoneyRecordBetweenDate(dateStart, dateEnd);
-            return moneyRecords.Where(m => m.RecordType == RecordType.Spent);
+            return _db.GetMoneyRecordBetweenDate(dateStart, dateEnd).Where(m => m.RecordType == RecordType.Spent)
+                                                                 .Select(moneyRecords => moneyRecords.MoneyRecordToSpent());
         }
 
-        public ISpent CreateMoneySpent(MoneyRecord moneyRecord)
+        public ISpent CreateMoneySpent(ISpent spent)
         {
-            moneyRecord.RecordType = RecordType.Spent;
-            _db.InsertMoneyRecord(moneyRecord);
-            //return moneyRecord.MoneyRecordToSpent();
-            return null;
+            IMoneyRecord moneyRecordSaved = _db.InsertMoneyRecord(spent.SpentToMoneyRecord());
+            spent.UpdateRecord(moneyRecordSaved);
+            return spent;
         }
 
-        public void UpdateMoneySpent(IMoneyRecord moneyRecord)
+        public ISpent UpdateMoneySpent(ISpent spent)
         {
-            //if (moneyRecord.RecordType == RecordType.Spent)
-            //    _db.UpdateMoneyRecord(moneyRecord);
-            //return;
-            return;
+            IMoneyRecord moneyRecordSaved = _db.UpdateMoneyRecord(spent.SpentToMoneyRecord());
+            spent.UpdateRecord(moneyRecordSaved);
+            return spent;
         }
 
         public void DeleteMoneySpent(int id)

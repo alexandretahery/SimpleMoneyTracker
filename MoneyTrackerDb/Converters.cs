@@ -5,7 +5,7 @@ namespace MoneyTrackerDb
 {
     public static class Converters
     {
-        public static MoneyRecord SpentToMoneyRecord(this IMoneyRecord spent)
+        public static MoneyRecord SpentToMoneyRecord(this ISpent spent)
         {
             return new MoneyRecord
             {
@@ -18,10 +18,33 @@ namespace MoneyTrackerDb
             };
         }
 
-        public static ISpent MoneyRecordToSpent(this IMoneyRecord spent)
+        public static ISpent MoneyRecordToSpent(this MoneyRecord moneyRecord)
         {
-            return (ISpent)spent;
+            if (moneyRecord is null 
+                || moneyRecord.RecordType != RecordType.Spent)
+                return null;
+            return new Spent(moneyRecord);
+        }
+        
+        public static MoneyRecord IncomeToMoneyRecord(this IIncome income)
+        {
+            return new MoneyRecord
+            {
+                Id = income.Id,
+                Description = income.Description,
+                Amount = income.Amount,
+                Date = income.Date,
+                Category = income.Category,
+                RecordType = income.RecordType
+            };
         }
 
+        public static IIncome MoneyRecordToIncome(this MoneyRecord moneyRecord)
+        {
+            if (moneyRecord is null 
+                               || moneyRecord.RecordType != RecordType.Income)
+                return null;
+            return new Income(moneyRecord);
+        }
     }
 }

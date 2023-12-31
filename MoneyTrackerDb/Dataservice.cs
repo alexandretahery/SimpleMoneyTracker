@@ -10,12 +10,12 @@ namespace MoneyTrackerDb
 {
     public class Dataservice
     {
-        //public IncomeController IncomeController { get; }
+        public IncomeController IncomeController { get; }
         public SpentController SpentController { get; }
 
         public Dataservice()
         {
-            //IncomeController = new IncomeController();
+            IncomeController = new IncomeController();
             SpentController = new SpentController();
         }
     }

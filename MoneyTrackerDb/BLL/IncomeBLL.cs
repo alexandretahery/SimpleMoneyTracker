@@ -1,8 +1,8 @@
-﻿using MoneyTrackerDb.DAL;
-using MoneyTracker.Common;
+﻿using MoneyTracker.Common;
+using MoneyTrackerDb.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoneyTrackerDb.Models;
 
 namespace MoneyTrackerDb.BLL
 {
@@ -10,47 +10,45 @@ namespace MoneyTrackerDb.BLL
     {
         private MoneyRecordDAL _db;
 
-        //internal IncomeBLL()
-        //{
-        //    _db = new MoneyRecordDb();
-        //}
+        internal IncomeBLL()
+        {
+            _db = new MoneyRecordDAL();
+        }
 
-        //public IMoneyRecord GetMoneyIncomeById(int id)
-        //{
-        //    IMoneyRecord moneyRecord = _db.GetMoneyRecordById(id);
-        //    if (moneyRecord.RecordType != RecordType.Income)
-        //        return null;
-        //    return moneyRecord;
-        //}
+        public IIncome GetMoneyIncomeById(int id)
+        {
+            return _db.GetMoneyRecordById(id).MoneyRecordToIncome();
+        }
 
-        //public IEnumerable<IMoneyRecord> GetAllMoneyIncome()
-        //{
-        //    IEnumerable<IMoneyRecord> moneyRecords = _db.GetAllMoneyRecord();
-        //    return moneyRecords.Where(m => m.RecordType == RecordType.Income);
-        //}
+        public IEnumerable<IIncome> GetAllMoneyIncome()
+        {
+            return _db.GetAllMoneyRecord().Where(m => m.RecordType == RecordType.Income)
+                                          .Select(moneyRecords => moneyRecords.MoneyRecordToIncome());
+        }
 
-        //public IEnumerable<IMoneyRecord> GetMoneyIncomeBetweenDate(System.DateTime dateStart, System.DateTime dateEnd)
-        //{
-        //    IEnumerable<IMoneyRecord> moneyRecords = _db.GetMoneyRecordBetweenDate(dateStart, dateEnd);
-        //    return moneyRecords.Where(m => m.RecordType == RecordType.Income);
-        //}
+        public IEnumerable<IIncome> GetMoneyIncomeBetweenDate(DateTime dateStart, DateTime dateEnd)
+        {
+            return _db.GetMoneyRecordBetweenDate(dateStart, dateEnd).Where(m => m.RecordType == RecordType.Income)
+                                                                 .Select(moneyRecords => moneyRecords.MoneyRecordToIncome());
+        }
 
-        //public void CreateMoneyIncome(IIncome moneyRecord)
-        //{
-        //    _db.InsertMoneyRecord((MoneyRecord)moneyRecord);
-        //    return;
-        //}
+        public IIncome CreateMoneyIncome(IIncome income)
+        {
+            IMoneyRecord moneyRecordSaved = _db.InsertMoneyRecord(income.IncomeToMoneyRecord());
+            income.UpdateRecord(moneyRecordSaved);
+            return income;
+        }
 
-        //public void UpdateMoneyIncome(IMoneyRecord moneyRecord)
-        //{
-        //    if (moneyRecord.RecordType == RecordType.Spent)
-        //        _db.UpdateMoneyRecord(moneyRecord);
-        //    return;
-        //}
+        public IIncome UpdateMoneyIncome(IIncome income)
+        {
+            IMoneyRecord moneyRecordSaved = _db.UpdateMoneyRecord(income.IncomeToMoneyRecord());
+            income.UpdateRecord(moneyRecordSaved);
+            return income;
+        }
 
-        //public void DeleteMoneyIncome(int id)
-        //{
-        //    _db.DeleteMoneyRecord(id);
-        //}
+        public void DeleteMoneyIncome(int id)
+        {
+            _db.DeleteMoneyRecord(id);
+        }
     }
 }
