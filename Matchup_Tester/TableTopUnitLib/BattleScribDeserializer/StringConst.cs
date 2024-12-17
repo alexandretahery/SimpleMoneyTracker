@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TableTopUnitLib.BattleScribDeserializer
 {
-    internal enum EProfilCategories
+    static class StringConst
     {
+        public string UNIT = "Unit";
     }
 }

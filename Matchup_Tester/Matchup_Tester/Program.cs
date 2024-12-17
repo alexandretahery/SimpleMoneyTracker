@@ -13,7 +13,7 @@ namespace Matchup_Tester
             string List1 = "C:\\DassaultDUOS\\Matchup_Tester\\Ultra vs custo.json";
             string jsonString = File.ReadAllText(List1);
             Root Root = JsonConvert.DeserializeObject<Root>(jsonString);
-            ProfilUnit unit;
+            ProfilUnit unit = new(Root.roster.forces[0].selections[5]);
         }
     }
 }
