@@ -12,11 +12,13 @@ namespace TableTopUnitLib.Unit
         {
             Effectivy = selection.number;
             Name = selection.name;
-            //selection.profiles;
-            //    for
-            foreach(var profil in selection.profiles)
+            foreach (var profil in selection.profiles)
             {
-                profil.typeName = 
+                if (profil.typeName.Equals("Unit"))
+                {
+                    Stats = new UnitStats(profil);
+                    break;
+                }
             }
         }
 

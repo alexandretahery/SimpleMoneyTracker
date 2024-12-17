@@ -8,6 +8,6 @@ namespace TableTopUnitLib.BattleScribDeserializer
 {
     static class StringConst
     {
-        public string UNIT = "Unit";
+        public static string UNIT = "Unit";
     }
 }
