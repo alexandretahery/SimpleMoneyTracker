@@ -12,31 +12,54 @@ namespace TableTopUnitLib.Unit
         {
             Effectivy = selection.number;
             Name = selection.name;
-            foreach (var profil in selection.profiles)
+
+            profilKeyWords(selection.categories)
+            profilExtract(selection);
+            ruleExtract(selection);
+        }
+
+        private void ruleExtract(Selection selection)
+        {
+            foreach (Rule rule in selection.rules)
             {
-                if (profil.typeName.Equals("Unit"))
-                {
-                    Stats = new UnitStats(profil);
-                    break;
-                }
+                Rules.Add(new RuleEntry(rule));
             }
         }
 
-        //public ProfilUnit(string name, List<string> keyWords, UnitStats stats, List<RangedWeapon> weapons, List<WeaponBase> weaponsBase)
-        //{
-        //    Name = name;
-        //    KeyWords = keyWords;
-        //    Stats = stats;
-        //    Weapons = weapons;
-        //    WeaponsBase = weaponsBase;
-        //}
-        
-        int Effectivy {  get; }
-        string Name { get; }
-        List<string> KeyWords { get; }
-        UnitStats Stats { get; }
-        List<RangedWeapon> Weapons { get; }
-        List<WeaponBase> WeaponsBase { get; }
-        List<string> rules { get; }
+        private void profilExtract(Selection selection)
+        {
+            foreach (var profil in selection.profiles)
+            {
+                switch (profil.typeName)
+                {
+                    case "Unit":
+                        Stats = new UnitStats(profil);
+                        break;
+                    case "Abilities":
+                        Abilities.Add(new AbilityEntry(profil));
+                        break;
+                    default:
+                        throw new Exception(profil.name);
+                }
+            }
+
+        }
+
+        private void profilKeyWords(List<Category> keyWord)
+        {
+            foreach (Category key in keyWord)
+            {
+                KeyWords.Add(key);
+            }
+        }
+
+        public int Effectivy { get; private set; }
+        public string Name { get; private set; }
+        public List<string> KeyWords { get; private set; }
+        public UnitStats Stats { get; private set; }
+        public List<RangedWeapon> Weapons { get; private set; }
+        public List<WeaponBase> WeaponsBase { get; private set; }
+        public List<AbilityEntry> Abilities { get; private set; } = new List<AbilityEntry>();
+        public List<RuleEntry> Rules { get; private set; }
     }
 }
