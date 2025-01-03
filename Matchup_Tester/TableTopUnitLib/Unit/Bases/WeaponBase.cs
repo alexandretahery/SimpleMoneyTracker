@@ -5,6 +5,9 @@ namespace TableTopUnitLib.Unit
     public class WeaponBase :EntryBase
     {
         public int Number { get; private set; }
+
+        public WeaponProfile weaponProfile { get; private set; }
+
         public int Damage { get; private set; }
         public int Attack { get; private set; }
         public int ArmorPenetration { get; private set; }
